@@ -6,7 +6,21 @@ using InteractiveUtils
 
 # ╔═╡ c3f5e2c1-d31f-4175-a66f-764afe0eb21f
 html"""
-<center><h1> Choosing most accurate mathematical formula </h1></center>
+<center><h1> Choosing most accurate mathematical formula: 
+<math display="inline"> <msup> 
+		<mi> (a+b)(a-b)</mi> 
+	</msup>
+</math> 
+or 
+<math display="inline">
+	<msup> 
+		<mi>a</mi> 
+		<mn>2</mn> 
+	</msup>
+	<msup> 
+		<mi>-b</mi> 
+		<mn>2</mn> 
+	</msup> </math> </h1></center>
 <br>
 <p>
 Let r be the radius of a sphere. The area of the sphere is calculated using:  
@@ -23,6 +37,9 @@ Let r be the radius of a sphere. The area of the sphere is calculated using:
 <p>We will alter the radius by some <math display="inline"> <mi>dr</mi>  </math> and we will calculate the change of the sphere's area, let <math display="inline"> <mi>dE</mi> </math>.
 </p>
 """
+
+# ╔═╡ 85ce6deb-1677-4037-afa1-29342395f278
+
 
 # ╔═╡ 5788b1fa-3bb3-48d9-b12e-32b2862a5898
 html"""
@@ -136,7 +153,7 @@ Our code should look like this.
 
 # ╔═╡ f13a2d69-875e-423f-8571-759478041a6d
 function sphere_area(n)
-    r = 6367 # Earth's radius in kilometers
+    r = 1000000 # Earth's radius in kilometers
     err1 = err2 = 0
     count1 = count2 = 0
     for i in 1:n
@@ -156,17 +173,91 @@ function sphere_area(n)
             count2 += 1
         end
     end
-    return [count1, count2]
+    return [count1*100/n, count2*100/n]
 end
 
 # ╔═╡ afd6a481-4d64-4514-8332-fa005cea36b6
-sphere_area(100)
+sphere_area(10000)
+
+# ╔═╡ 70531a35-6aed-497e-8f25-07cc139b09de
+html"""
+Let P1 be the percentage that the 1st formula is more accurate, and P2 be the percentage that the 2nd formula is more accurate.
+"""
+
+# ╔═╡ c3fe3da2-2162-49dc-b15e-fec210a3c2e2
+html"""<table>
+  <tr>
+    <th>n</th>
+    <th>P1</th>
+    <th>P2</th>
+  </tr>
+  <tr>
+    <td>10,000</td>
+    <td>38.53%</td>
+    <td>61.47%</td>
+  </tr>
+  <tr>
+    <td>100,000</td>
+    <td>37.99%</td>
+    <td>61.99%</td>
+  </tr>
+  <tr>
+    <td>1,000,000</td>
+    <td>38.07%</td>
+    <td>61.99%</td>
+  </tr>
+  <tr>
+    <td>10,000,000</td>
+    <td>38.10%</td>
+    <td>61.88%</td>
+  </tr>
+  <tr>
+    <td>100,000,000</td>
+    <td>38.10%</td>
+    <td>61.88%</td>
+  </tr>
+</table>
+"""
+
+# ╔═╡ 4339158b-5c80-4aca-ae81-afcbd194f279
+html"""
+<b class="keywords">Conclusion</b>: For random 
+<math display="inline"> <mi> dr &isin; [0,1] </mi> </math> we observe that the formula 
+<math display="inline"> <msup> 
+		<mi> (a+b)(a-b)</mi> 
+	</msup>
+</math> 
+is much more accurate than
+<math display="inline">
+	<msup> 
+		<mi>a</mi> 
+		<mn>2</mn> 
+	</msup>
+	<msup> 
+		<mi>-b</mi> 
+		<mn>2</mn> 
+	</msup> </math>.
+"""
+
+# ╔═╡ 4c1838e2-6776-4759-b232-10000bc55e77
+html"""
+Note: That can also be proven using error analysis: 
+"""
+
+# ╔═╡ 625c92ea-fb96-4a49-9d24-f3e35f5bef1e
+# ╠═╡ disabled = true
+#=╠═╡
+html"""
+<img src="https://drive.google.com/file/d/1alSE-qxVc-uXXln1WxoRERF2iNiO42km/view?usp=sharing" alt="Proof1">
+"""
+  ╠═╡ =#
 
 # ╔═╡ Cell order:
-# ╟─c3f5e2c1-d31f-4175-a66f-764afe0eb21f
+# ╠═c3f5e2c1-d31f-4175-a66f-764afe0eb21f
+# ╠═85ce6deb-1677-4037-afa1-29342395f278
 # ╟─5788b1fa-3bb3-48d9-b12e-32b2862a5898
-# ╟─0f9e70e3-663a-4975-84fd-7019a8005509
-# ╟─1101e156-176d-4def-968d-dd538f079bb9
+# ╠═0f9e70e3-663a-4975-84fd-7019a8005509
+# ╠═1101e156-176d-4def-968d-dd538f079bb9
 # ╟─f2576482-b18f-4f25-8907-94513ea58c22
 # ╟─b6f202ab-1d7a-4335-b064-64151a77b195
 # ╟─fbcafcb5-28a7-4787-a0c9-0f3f6683a951
@@ -174,3 +265,8 @@ sphere_area(100)
 # ╟─b7766f91-e437-4ef7-8097-b216a79286a9
 # ╠═f13a2d69-875e-423f-8571-759478041a6d
 # ╠═afd6a481-4d64-4514-8332-fa005cea36b6
+# ╟─70531a35-6aed-497e-8f25-07cc139b09de
+# ╟─c3fe3da2-2162-49dc-b15e-fec210a3c2e2
+# ╟─4339158b-5c80-4aca-ae81-afcbd194f279
+# ╟─4c1838e2-6776-4759-b232-10000bc55e77
+# ╠═625c92ea-fb96-4a49-9d24-f3e35f5bef1e
