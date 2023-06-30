@@ -41,9 +41,6 @@ Let r be the radius of a sphere. The area of the sphere is calculated using:
 </p>
 """
 
-# ╔═╡ 85ce6deb-1677-4037-afa1-29342395f278
-
-
 # ╔═╡ 5788b1fa-3bb3-48d9-b12e-32b2862a5898
 html"""
 
@@ -1132,7 +1129,6 @@ version = "17.4.0+0"
 
 # ╔═╡ Cell order:
 # ╟─c3f5e2c1-d31f-4175-a66f-764afe0eb21f
-# ╠═85ce6deb-1677-4037-afa1-29342395f278
 # ╟─5788b1fa-3bb3-48d9-b12e-32b2862a5898
 # ╟─0f9e70e3-663a-4975-84fd-7019a8005509
 # ╟─1101e156-176d-4def-968d-dd538f079bb9
