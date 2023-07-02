@@ -4,18 +4,6 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ 36bcd7cf-0b86-42f7-9d88-a2acf6ce7392
-Pkg.add(PackageSpec(name="PyCall", rev="master"))
-
-# ╔═╡ d245203d-639c-4de5-8bfb-7a322520397d
-Pkg.add("MATLAB")
-
-# ╔═╡ 039075b6-a569-42ce-abe6-2e68e43a46fc
-using PyCall
-
-# ╔═╡ f97b2b4c-483c-4021-9f59-063a0a1f4533
-using PlutoUI, Random, Polynomials, Plots, LinearAlgebra,PlotlyBase
-
 # ╔═╡ 2f6761a3-0733-44d8-9581-aa16472d8bfb
 md"# In these project we compare 3 algorithms that define if a number is prime or not"
 
@@ -50,31 +38,6 @@ md"
 15.   @time end
 "
 
-# ╔═╡ 93172065-b0c5-49fc-b294-6f989cabb821
-md"
-asd \n
-asd
-"
-
-# ╔═╡ 53e8a2e6-0dad-4216-ae7e-a7aefc53acad
-
- print 'Give an integer number n='
- Read $n$
-   @time begin
-  $counter=1$
-  for $i=2:n$
-   if $(rem(n,i))==0$
-     counter=counter + 1
-   end
-  end
-  if $counter==2$
-     print 'O n is prime'
-  else
-     print 'O n is not prime'
-  end
-   @time end
-
-
 # ╔═╡ 3494f126-7636-4a70-bbf6-97898b890664
 md"#### The algorithm in Julia"
 
@@ -94,84 +57,53 @@ md"#### The algorithm in Julia"
    end
   end
 
-# ╔═╡ f24ba234-f060-4c01-9ea0-504a64669e9a
-
-
 # ╔═╡ 76ae52d1-5b10-44bb-819a-15e9892f8c7c
-@time primes2(666666666)
+#"In the parenthesis below write a number greater than 1 in order to test the programm"
+@time primes2(1000000)
 
 # ╔═╡ 6ecd6581-bcab-47aa-be5e-557339e53412
 md"#### The algorithm in Python"
 
-# ╔═╡ 09fbb99f-f1f0-4170-8df3-b82ce20db81f
-Pkg.build("PyCall")
-
-# ╔═╡ 9bf12c0c-b93c-4b04-b438-f6e20d28b6ef
-py"""
-def sumMyArgs (i, j):
-  return i+j
-def getNElement (n):
-  a = [0,1,2,3,4,5,6,7,8,9]
-  return a[n]
-"""
-
-# ╔═╡ 538cadb9-69df-415b-8edb-f6ed955134fa
-a = py"sumMyArgs"(3,4)          # 7
-
-# ╔═╡ 2a7b3e74-8195-4516-b73c-6f40bc4385eb
-b = py"sumMyArgs"([3,4],[5,6])  # [8,10]
-
-# ╔═╡ 72048af6-a7c2-4d9a-82b8-a2f393e6a214
-typeof(b)                       # Array{Int64,1}
-
-# ╔═╡ e5402624-3156-4996-a12c-fd1d2221e6e6
-c = py"sumMyArgs"([3,4],5)      # [8,9]
-
-# ╔═╡ 64e8f85c-bd62-4607-bb9f-13834c025c28
-d = py"getNElement"(1)          # 1
-
-# ╔═╡ 7f4a47dd-b88e-4950-af26-135a91ec8a36
-np = pyimport("numpy")
-
-# ╔═╡ 1cbe7138-77a1-42a0-850d-9548388c226d
-time= pyimport("time")
-
 # ╔═╡ 640fdd44-8856-4206-b43a-84c03ad10f06
-py"""
-     n= int(input("Give intenger greater than 1: "))
-   st = time.time()  
-   numbers = np.arange(1, n + 1)
-   divisors = np.remainder(n, numbers)
-  divisor_count = np.count_nonzero(divisors == 0)
-   if divisor_count == 1: 
-   print( n " is prime .")
-  else:
-   print(n " is not prime.")
-  et = time.time()
-  elapsed_time = et - st
-  print('Execution time:', elapsed_time, 'seconds')
-"""
+md"
+ 1.  import time
+ 2.  import numpy as np
+ 3.  n= int(input('Give intenger greater than 1: '))
+ 4.  st = time.time()  
+ 5.  numbers = np.arange(1, n + 1)
+ 6.  divisors = np.remainder(n, numbers)
+ 7.  divisor_count = np.count_nonzero(divisors == 0)
+ 8.  if divisor_count == 2: 
+9.   print( n ' is prime .')
+10.  else:
+11.   print(n ' is not prime.')
+12.  et = time.time()
+13.  elapsed_time = et - st
+14.  print('Execution time:', elapsed_time, 'seconds')
+"
 
 # ╔═╡ 5b6919dd-bc64-4e80-9441-656884911a61
 md"#### The algorithm in Matlab"
 
 # ╔═╡ 07d1d0a2-660c-4bcb-b341-286725011193
- 1  % primes1.m
- 2  n=0;
- 3  while n<2
- 4   n = input('Give intenger greater than 1: '); 
- 5  end
- 6  counter = 1; 
- 7  for i=2:n
- 8   if (rem(n,i)==0)
- 9   counter = counter+1;
-10   end
-11  end
-12  if (counter==2) 
-13  fprintf('%d is prime \n', n);
-14  else
-15   fprintf('%d is not prime\n', n);
-16  end
+md"
+1.  % primes1.m
+2.  n=0;
+3.  while $n<2$
+4.   n = input('Give intenger greater than 1: '); 
+5. end
+6.  $counter=1$
+7.  for $i=2:n$
+8.   if $(rem(n,i))==0$
+9.     counter=counter + 1
+10.   end
+11.  end
+12.  if $counter==2$
+13.  fprintf('%d is prime \n', n);
+14.  else
+15.   fprintf('%d is not prime\n', n);
+16.  end
+"
 
 # ╔═╡ c6f53f87-3cb0-4ff9-bca9-067a6f3815c0
 md"#### Numerical implementation "
@@ -252,8 +184,53 @@ function primes1(n::Number)
    end
   end
 
-# ╔═╡ 8d82c6c8-1e3b-4bdd-a07a-5efd62f83e14
+# ╔═╡ 44bfa42b-95eb-4b52-b614-2f407428e456
+#"In the parenthesis below write a number greater than 1 in order to test the programm"
+@time primes1(1000000)
 
+# ╔═╡ 743b8553-6943-4e36-b969-b1bf5b160714
+md"#### The algorithm in Python"
+
+# ╔═╡ 8b6fb851-2b70-4b06-9dbd-dbcb608ab76a
+md"
+ 1.  import time
+ 2.  import numpy as np
+ 3.  n= int(input('Give intenger greater than 1: '))
+ 4.  st = time.time()  
+ 5. numbers = np.arange(1, n // 2 + 1)
+ 6.  divisors = np.remainder(n, numbers)
+ 7.  divisor_count = np.count_nonzero(divisors == 0)
+ 8.  if divisor_count == 1: 
+9.   print( n ' is prime .')
+10.  else:
+11.   print(n ' is not prime.')
+12.  et = time.time()
+13.  elapsed_time = et - st
+14.  print('Execution time:', elapsed_time, 'seconds')
+"
+
+# ╔═╡ 8d82c6c8-1e3b-4bdd-a07a-5efd62f83e14
+md"#### The algorithm in Matlab"
+
+# ╔═╡ 18ce520b-bbd9-4870-a396-adf139d8ab72
+md"
+1.  % primes1.m
+2.  n=0;
+3.  while $n<2$
+4.   n = input('Give intenger greater than 1: '); 
+5. end
+6.  $counter=1$
+7.  for $i=2:(n/2)$
+8.   if $(rem(n,i))==0$
+9.     counter=counter + 1
+10.   end
+11.  end
+12.  if $counter==1$
+13.  fprintf('%d is prime \n', n);
+14.  else
+15.   fprintf('%d is not prime\n', n);
+16.  end
+"
 
 # ╔═╡ 50a17efc-4c91-497f-a328-0aa352b5c1d0
 md"#### Numerical implementation "
@@ -294,7 +271,7 @@ md"#### Description of the method"
 md"We create this method by noticing that a number $Ν$ is not prime when it has (at least) two divisors greater than 1. In this case at least one of its divisors is minor than the square root of the number. We modify the second method by now examining all the numbers that are minor to the square root of $Ν$. If the latter one is not an integer, otherwise the number is not prime, because its square root divides it."
 
 # ╔═╡ 3668abc8-c4f9-4741-b591-d9490956a92f
-
+md"#### The algorithm in pseudo language"
 
 # ╔═╡ 3308997a-6176-4db7-8dd8-d9c253197e90
 md"
@@ -315,6 +292,9 @@ md"
 15.   @time end
 "
 
+# ╔═╡ 49b842d9-05c4-4bd7-a924-8b4c31faa618
+md"#### The algorithm in Julia"
+
 # ╔═╡ b5d2b8a1-bbe5-421b-96d3-e1e7a2c94326
   function primes(n::Number)
    # primes3.m
@@ -331,8 +311,53 @@ md"
    end
   end
 
-# ╔═╡ dcce9b04-d7e0-4041-aa92-57964f69d4b2
+# ╔═╡ 1f585d28-81cc-44fe-bf68-ded4ec427636
+#"In the parenthesis below write a number greater than 1 in order to test the programm"
+@time primes(1000000)
 
+# ╔═╡ 4333c797-f26a-40bc-9857-8290438b3613
+md"#### The algorithm in Python"
+
+# ╔═╡ eed02bd4-5d44-4604-879a-44411d79a76d
+md"
+ 1.  import time
+ 2.  import numpy as np
+ 3.  n= int(input('Give intenger greater than 1: '))
+ 4.  st = time.time()  
+ 5.  numbers = np.arange(1, int(np.sqrt(n)) + 1)
+ 6.  divisors = np.remainder(n, numbers)
+ 7.  divisor_count = np.count_nonzero(divisors == 0)
+ 8.  if divisor_count == 1: 
+9.   print( n ' is prime .')
+10.  else:
+11.   print(n ' is not prime.')
+12.  et = time.time()
+13.  elapsed_time = et - st
+14.  print('Execution time:', elapsed_time, 'seconds')
+"
+
+# ╔═╡ 94cc5583-2bc4-454d-9a90-123f9a9683b2
+md"#### The algorithm in Matlab"
+
+# ╔═╡ dcce9b04-d7e0-4041-aa92-57964f69d4b2
+md"
+1.  % primes1.m
+2.  n=0;
+3.  while $n<2$
+4.   n = input('Give intenger greater than 1: '); 
+5. end
+6.  $counter=1$
+7.  for $i=2:floor(sqrt(n))$
+8.   if $(rem(n,i))==0$
+9.     counter=counter + 1
+10.   end
+11.  end
+12.  if $counter==1$
+13.  fprintf('%d is prime \n', n);
+14.  else
+15.   fprintf('%d is not prime\n', n);
+16.  end
+"
 
 # ╔═╡ 35180e55-dbc9-4961-8af1-b808a00a3950
 md"#### Numerical implementation "
@@ -380,27 +405,12 @@ md"
 # ╠═9c426c10-18b5-11ee-3f0a-57e2a4f1d10b
 # ╠═76ab8cff-c286-431c-b2ac-e4af7fd812a5
 # ╠═31fd2f6e-c39c-43a2-bc29-7e0ce6bf52be
-# ╠═93172065-b0c5-49fc-b294-6f989cabb821
-# ╠═53e8a2e6-0dad-4216-ae7e-a7aefc53acad
 # ╠═3494f126-7636-4a70-bbf6-97898b890664
 # ╠═dcfd8c2b-2497-4d73-89e8-4c27cd08abb7
-# ╠═f24ba234-f060-4c01-9ea0-504a64669e9a
 # ╠═76ae52d1-5b10-44bb-819a-15e9892f8c7c
 # ╠═6ecd6581-bcab-47aa-be5e-557339e53412
-# ╠═36bcd7cf-0b86-42f7-9d88-a2acf6ce7392
-# ╠═09fbb99f-f1f0-4170-8df3-b82ce20db81f
-# ╠═039075b6-a569-42ce-abe6-2e68e43a46fc
-# ╠═9bf12c0c-b93c-4b04-b438-f6e20d28b6ef
-# ╠═538cadb9-69df-415b-8edb-f6ed955134fa
-# ╠═2a7b3e74-8195-4516-b73c-6f40bc4385eb
-# ╠═72048af6-a7c2-4d9a-82b8-a2f393e6a214
-# ╠═e5402624-3156-4996-a12c-fd1d2221e6e6
-# ╠═64e8f85c-bd62-4607-bb9f-13834c025c28
-# ╠═7f4a47dd-b88e-4950-af26-135a91ec8a36
-# ╠═1cbe7138-77a1-42a0-850d-9548388c226d
 # ╠═640fdd44-8856-4206-b43a-84c03ad10f06
 # ╠═5b6919dd-bc64-4e80-9441-656884911a61
-# ╠═d245203d-639c-4de5-8bfb-7a322520397d
 # ╠═07d1d0a2-660c-4bcb-b341-286725011193
 # ╠═c6f53f87-3cb0-4ff9-bca9-067a6f3815c0
 # ╠═48e22ed0-fd12-4302-b4ae-6e6b675e2e88
@@ -413,7 +423,11 @@ md"
 # ╠═c49b9e67-aba8-4ab9-8f9e-d20bbc9ca1b3
 # ╠═b444d59e-ded5-416f-92db-081659c34a67
 # ╠═3a9fb962-1bbb-4a11-8010-0274c0e4603a
+# ╠═44bfa42b-95eb-4b52-b614-2f407428e456
+# ╠═743b8553-6943-4e36-b969-b1bf5b160714
+# ╠═8b6fb851-2b70-4b06-9dbd-dbcb608ab76a
 # ╠═8d82c6c8-1e3b-4bdd-a07a-5efd62f83e14
+# ╠═18ce520b-bbd9-4870-a396-adf139d8ab72
 # ╠═50a17efc-4c91-497f-a328-0aa352b5c1d0
 # ╠═22012d47-9a83-4ad6-8ab6-866489f36026
 # ╠═55e5292c-016a-42e4-b9f6-1f0236fb3854
@@ -423,8 +437,12 @@ md"
 # ╠═c09d1d8e-feaa-42f7-966e-20d8e160545b
 # ╠═3668abc8-c4f9-4741-b591-d9490956a92f
 # ╠═3308997a-6176-4db7-8dd8-d9c253197e90
-# ╠═f97b2b4c-483c-4021-9f59-063a0a1f4533
+# ╠═49b842d9-05c4-4bd7-a924-8b4c31faa618
 # ╠═b5d2b8a1-bbe5-421b-96d3-e1e7a2c94326
+# ╠═1f585d28-81cc-44fe-bf68-ded4ec427636
+# ╠═4333c797-f26a-40bc-9857-8290438b3613
+# ╠═eed02bd4-5d44-4604-879a-44411d79a76d
+# ╠═94cc5583-2bc4-454d-9a90-123f9a9683b2
 # ╠═dcce9b04-d7e0-4041-aa92-57964f69d4b2
 # ╠═35180e55-dbc9-4961-8af1-b808a00a3950
 # ╠═d90e9f30-0907-486e-b814-a0c47420c813
