@@ -11,8 +11,10 @@ Julia is a new general-purpose, high-level, high-performance, dynamic programmin
 
 ## Poster Presentation
 <p align="center">
-  <img src="julia_lang_poster-1.png" alt="julia poster presentation" width="80%""/>
+  <img src="new_poster.png" alt="julia poster presentation" width="90%""/>
 </p>
-\
-References \
+
+
+## References 
+
 <sup>[1] Downey, A., Lauwens, B., Think Julia: How to Think Like a Computer Scientist. O’Reilly, 2018.</sup>
