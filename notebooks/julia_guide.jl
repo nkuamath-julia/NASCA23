@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.9
+# v0.19.20
 
 using Markdown
 using InteractiveUtils
@@ -7,8 +7,9 @@ using InteractiveUtils
 # This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
 macro bind(def, element)
     quote
+        local iv = try Base.loaded_modules[Base.PkgId(Base.UUID("6e696c72-6542-2067-7265-42206c756150"), "AbstractPlutoDingetjes")].Bonds.initial_value catch; b -> missing; end
         local el = $(esc(element))
-        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : iv(el)
         el
     end
 end
@@ -24,7 +25,7 @@ using PlutoUI
 
 # ╔═╡ d382b6c0-c996-4b55-a4e4-13cec95f4c6c
 let
-	#Ένα ένα τα στοιχεία, όμοιο με τη Matlab.
+	#one by one element, same as Matlab.
 	using Printf
 	A = [1 3 5; 4 2 6; 7 8 9; 1 2 3]
 	
@@ -367,6 +368,38 @@ let
 	y = x[1] * "a" * x[3:end]
 end
 
+# ╔═╡ 53146be1-f6d5-41aa-9940-35cfdbd7f045
+let
+#=
+import Pkg
+Pkg.add("Plots")
+=#
+
+using Plots
+
+x = 0:0.1:10
+y = x.^2
+
+plot(x, y, xlabel ="x", ylabel = "y", label = "y1")
+plot!(x, 2*y, xlabel ="x", ylabel = "y", label = "y2")
+
+#If we are plot without !then y1 is not displayeds.
+#We use gr() for plotting.
+end
+
+# ╔═╡ 0d380ab7-4534-49a0-8b1e-c17471bb6a2c
+let
+#=
+import Pkg
+Pkg.add("Colors")
+=#
+
+using Colors
+
+#Pallete creation with 1000 different colours.
+palette = distinguishable_colors(100)
+end
+
 # ╔═╡ 794d6540-3307-42f3-aa74-658c1e453dcb
 struct = 25
 
@@ -534,12 +567,16 @@ md"""
 """
 
 # ╔═╡ a8b017d6-b8e7-4b9b-b343-5a5414ae4583
+# ╠═╡ disabled = true
+#=╠═╡
 @bind x confirm(Slider(-5:10, default=5))
+  ╠═╡ =#
 
 # ╔═╡ 0908e13f-cb5f-402a-9f1e-2dcd35898839
 @bind y confirm(Slider(-5:10, default=-3))
 
 # ╔═╡ 5b1c9a5e-bd5e-486c-b6fc-9a18f021a9e5
+#=╠═╡
 begin
 	#=
 	if condition1 is true
@@ -563,6 +600,7 @@ begin
 		end
 	end
 end
+  ╠═╡ =#
 
 # ╔═╡ 9576bfad-110c-41d8-9042-789afdc5332a
 
@@ -767,12 +805,12 @@ md"""
 
 # ╔═╡ 803e0631-721f-4a19-9777-7e36bd54315c
 md"""
-- Μπορούμε να επιλέξουμε συγκεκρίμενα τμήματα πινάκων.
-    - Για διανύσματα:
-        - `όνομα_πίνακα[n:m]` = από τον n εώς και τον m δείκτη του διανύσματος.    
-        - `όνομα_πίνακα[:]` = ολόκληρο το διάνυσμα. _(Ή απλώς γράφουμε το `όνομα πίνακα`)_    
-        - `όνομα_πίνακα[n:end]` = από το n στοιχείο μέχρι το τελευταίο του διανύσματος.   
-        - `όνομα_πίνακα[n:z:m]` = από τον n εώς και τον m δείκτη του διανύσματος με βήμα z.
+- We can select specific sections of matrices.
+    - For vectors:
+        - `name_matrix[n:m]` = from index n to index m of the vector.    
+        - `name_matrix[:]` = the whole vector. _(or else we can write just `name_matrix`)_    
+        - `name_matrix[n:end]` = from index n until the last index of vector.   
+        - `name_matrix[n:z:m]` = from index n until index m of vector with step z. 
 """
 
 # ╔═╡ e160c3e5-7391-4f69-befa-e418fa982899
@@ -780,12 +818,12 @@ let
 	#Array
 	a = ["5", "deka", 15, [20, 25]]
 	
-	#Η αρίθμηση δεικτών ξεκινάει από το 1.
-	#Τροποποίηση του 3ου στοιχείου του διανύσματος.
+	#The indexing starts from 1.
+	#Modification of the 3rd element of the vector.
 	a[3] = 40 
 	println("1. ", a)
 	
-	#Μπορούμε να τροποποιήσουμε και περισσότερα στοιχεία ταυτόχρονα ενός διανύσματος.
+	#We can modify more than one element simultaneously
 	a[1:3] = [0, 0, 0]
 	println("2. ", a)
 end
@@ -793,10 +831,10 @@ end
 # ╔═╡ 904cfdcf-9d58-4473-ac9e-088612de1870
 let
 	#=
-	a[:] = ολόκληρο το διάνυσμα.
-	a[2:4] = από το 2ο εως το 4ο στοιχείο του διανύσματος.
-	a[3:end] = από το 3ο στοιχείο μέχρι το τελευταίο του διανύσματος.
-	a[end:-2:3] = από το τελευταίο στοιχείο εώς και το 3ο στοιχείο του διανύσματος με βήμα -2.
+	a[:] = whole vector
+	a[2:4] = from 2nd until the 4th elemnt of vector.
+	a[3:end] = from 3rd element until last element of vector.
+	a[end:-2:3] = from the last element of vector until the 3rd with step of -2.
 	=#
 	
 	a = [1, 3, 5, 4, 2, 6, 7, 8, 9, 10]
@@ -809,40 +847,40 @@ end
 
 # ╔═╡ 860ccee5-5b85-45ed-852b-bf370f323be3
 md"""
-- Τροποποίηση:
-    - Για δυσδιάστατους πίνακες:
-        - `όνομα_πίνακα[i, j]` =  εντοπισμός στοιχείου που βρίσκεται στην θέση (i, j) του πίνακα, όπου i, j ακέραιοι μεγαλύτεροι του 1.    
-        - `όνομα_πίνακα[i, j] = y` = τροποποίηση του στοιχείου που βρίσκεται στην θέση (i, j) του πίνακα με το στοιχείο y.
+- Modification:
+    - For 2d matrices:
+        - `name_matrix[i, j]` = locating the element at position (i, j) of the matrix, where i, j are integers greater than 1.    
+        - `name_matrix[i, j] = y` = modification of the element at position (i, j) of the matrix with the element y.
 """
 
 # ╔═╡ 833ffd46-5d5a-4eb6-b854-29897b803f16
 md"""
 
-- Επιλογή συγκεκριμένων τμημάτων:
-    - Για δυσδιάστατους πίνακες:
-        - `όνομα_πίνακα[n:m, k:l]` = από τον n εώς και τον m δείκτη για γραμμές και από τον k εως και τον l δείκτη για στήλες του πίνακα.    
-        - `όνομα_πίνακα[:,:]` = ολόκληρος ο πίνακας. _(Ή απλώς γράφουμε το `όνομα πίνακα`)_        
-        - `όνομα_πίνακα[:]` = ολόκληρος ο πίνακας. _(Σε μορφή διανύσματος, είναι αντίγραφο του πίνακα)_   
-        - `όνομα_πίνακα[n:end, k:end]` = από τη n μέχρι την τελευταία γραμμή και από την k μέχρι την τελευταία στήλη του πίνακα.    
-        - `όνομα_πίνακα[n:z:m, k:w:l]` = από την n εώς και την m γραμμή του πίνακα με βήμα z, και αντίστοιχα τα k,w,l για τη στήλη.
+- Selecting specific sections:
+    - For 2d matrices:
+        - `name_matrix[n:m, k:l]` =from index n to index m for rows and from index k to index l for columns of the matrix.
+        - `name_matrix[:,:]` = the whole matrix. _(or we just write `name_matrix`)_
+        - `name_matrix[:]` = the whole matrix. _(Vector form, copy of matrix)_   
+        - `name_matrix[n:end, k:end]` = from the n-th to the last row and from the k-th to the last column of the matrix..    
+        - `name_matrix[n:z:m, k:w:l]` = from the n-th to the m-th row of the matrix with step size z, and similarly for the k, w, l indices for the column.
        
 """
 
 # ╔═╡ 13d9ef95-4d30-4834-9a34-3e2ba55e070a
 let
-	#Δυσδιάστατος πίνακας
+	#2d matrix
 	A = [2 3; 4 5; 6 1]
 	
-	#Η αρίθμηση δεικτών ξεκινάει από το 1.
-	#Τροποποίηση του στοιχείου του π΄ίνακα που βρίσκεται στη θέση (2,1), δεύτερη γραμμή-πρώτη στήλη.
+	#Indexing starts 1.
+	#Modification of the element of the matrix located at position (2,1), second row-first column.
 	A[2,1] = 40 
 	println("1. A = ", A)
 	
-	#Μπορούμε να τροποποιήσουμε και περισσότερα στοιχεία ταυτόχρονα ενός πίνακα.
+	#We can modify multiple elements of a matrix simultaneously.
 	A[1,:] .= 0
 	println("2. A = ", A)
 	
-	#Επιπλέον τρόποι:
+	#Additional ways:
 	A[:,2] = [10 32 5]
 	println("3. A = ", A)
 	
@@ -853,12 +891,11 @@ end
 # ╔═╡ 6c6e293b-1343-4945-a55d-9f1bc1ed3445
 let
 	#=
-	A[:,:] = ολόκληρος ο πίνακας.
-	A[2:3, 1:3] = από τη δεύτερη εώς την τρίτη γραμμή του πίνακα και από την πρώτη εώς την τρίτη στήλη.
-	A[1:end, 2:end] = από την πρώτη γραμμή εώς την τελευταία του πίνακα και από την δεύτερη εώς την τελευταία στήλη.
-	A[end:-2:1, end:-1:2] = από την τελευταία γραμμή εώς την πρώτη με βήμα -2 και από την τελευταία στήλη εώς την δεύτερη με βήμα -1
-	Προσοχή στα διανύσματα γραμμής και στήλης στο τελευταίο παράδειγμα παίρνουμε τα στοιχεία των διανυσμάτων από το τελευταίο προς
-	το πρώτο.
+	A[:,:] = whole matrix.
+	A[2:3, 1:3] = from the second to the third row of the matrix and from the first to the third column.
+	A[1:end, 2:end] =from the first row to the last of the matrix and from the second to the last column.
+	A[end:-2:1, end:-1:2] = from the last row to the first with a step size of -2, and from the last column to the second with a step size of -1.
+	attention to the row and column vectors in the last example, we take the elements of the vectors from the last to the first.
 	=#
 	
 	A = [1 3 5; 4 2 6; 7 8 9; 1 2 3]
@@ -876,7 +913,7 @@ end
 
 # ╔═╡ 5ebf4e5f-4ab0-4828-bc34-6c04078bc8b9
 md"""
-- Μπορούμε να χρησιμοποιήσουμε τον boolean τελεστή ∈, ο οποίος επιστρέφει true αν κάποιο στοιχείο ανήκει στον πίνακα.
+- We can use the boolean operator ∈, which returns true if an element belongs to the array.
 """
 
 # ╔═╡ 78e049a7-babe-41af-80b5-c076ded694ec
@@ -898,12 +935,12 @@ end
 
 # ╔═╡ 727b50ba-221c-419c-b34e-9caf5f7ee5da
 md"""
-- Προσπέλαση πινάκων:
+- Accessing arrays:
 """
 
 # ╔═╡ e2069f84-eefa-4e77-ae3d-019450f32446
 let
-	#Αναφερόμαστε στο στοιχείο του πίνακα.
+	#referring to an element of the array
 	a = ["5", "deka", 15, [20, 25]]
 	
 	for item in a
@@ -913,7 +950,7 @@ end
 
 # ╔═╡ 2d0190f4-505d-4e2e-bbcf-bb6eefb169c9
 let
-	#Αναφερόμαστε στον δείκτη του πίνακα.
+	#referring to an index of the array
 	a = ["5", "deka", 15, [20, 25]]
 	
 	for i in eachindex(a)
@@ -923,7 +960,7 @@ end
 
 # ╔═╡ 48d32a47-e7bb-4fda-9d3f-87fdcd7caf89
 let
-	#Ολόκληρη γραμμή
+	#Selecting whole line
 	A = [1 3 5; 4 2 6; 7 8 9; 1 2 3]
 	
 	for row in eachrow(A)
@@ -933,7 +970,7 @@ end
 
 # ╔═╡ 8b46acf3-8d0c-4241-acbc-b3661d5e4338
 let
-	#Ολόκληρη στήλη
+	#Selecting whole column
 	A = [1 3 5; 4 2 6; 7 8 9; 1 2 3]
 	
 	for col in eachcol(A)
@@ -946,9 +983,9 @@ end
 
 # ╔═╡ a7506c02-fa10-48a2-a3d9-fb6374c5e050
 md"""
-###### Πράξεις πινάκων
+###### Operations in Matrices
 
-- Ισχύουν οι γνωστές αριθμητικές πράξεις πινάκων με αριθμό και πίνακα, ωστόσο οι εντολές πρέπει να ακολουθούνται από `.` (τελεία), δηλαδή `.+`, `.-`, `./`, `.%`, `.*`, `.^`, ..., αν θέλουμε να εκτελέσουμε πράξεις κατά συντεταγμένες(elementwise).
+- The familiar arithmetic operations between a number and a matrix are valid, however, the commands must be followed by a dot `.` , such as `.+`, `.-`, `./`, `.%`, `.*`, `.^`, ..., if we want to perform elementwise operations.
 """
 
 # ╔═╡ fce793ee-5edb-49dc-a91f-39cb374e1790
@@ -956,14 +993,14 @@ md"""
 
 # ╔═╡ bcbb75a2-3533-4685-8763-3eceaec59110
 html"""
-<br><h3> Χρήσιμες εσωτερικές συναρτήσεις της Julia </h3><br>
+<br><h3> Useful built-in functions of Julia </h3><br>
 """
 
 # ╔═╡ 416f4550-c637-4bb2-a789-0b4591df8fd4
 md"""
-##### Εισόδου
+##### Input
 
-- `readline()` = επιστρέφει σε μορφή συμβολοσειράς ό,τι πληκτρολόγησε ο χρήστης.
+- `readline()` = returns in string format whatever the user has typed.
 """
 
 # ╔═╡ a9590a3e-c775-4928-884e-acbb97e5b9a5
@@ -971,12 +1008,12 @@ md"""
 
 # ╔═╡ 1d3598ca-bf39-4268-a71f-f5e27d67b908
 md"""
-##### Εξόδου
-- `println(x, y, z, ...)` = εκτυπώνει τα στοιχεία x, y, z και αλλάζει γραμμή (ενσωματωμένο \n).
+##### Output
+- `println(x, y, z, ...)` =prints the elements x, y, z and changes the line (using the built-in \n).
 
-- `print(x, y, z, ...)` = εκτυπώνει τα στοιχεία x, y, z χωρίς αλλαγές γραμμών.
+- `print(x, y, z, ...)` = prints the elements x, y, z without changing lines.
 
-- `display(x)` = εμφανίζει το στοιχείο x.
+- `display(x)` = displays the element x.
 """
 
 # ╔═╡ 22c738b1-6dab-4b35-b38e-4445d194ca17
@@ -984,10 +1021,10 @@ md"""
 
 # ╔═╡ 0e6a87a3-c92d-4998-8cf0-5dcda3a1ab8c
 md"""
-##### Μετατροπή τύπου ενός στοιχείου x
-- `convert(τύπος, x)` = επιστρέφει το στοιχείο x στην μορφή τύπου, όπου x είναι αριθμός και τύπος είδος αριθμού (integer, float-point number).
+##### Converting the type of an element x
+- `convert(type, x)` = returns the element x in its type format, where x is a number and the type is either an integer or a floating-point number.
 
-- `parse(τύπος, x)`= επιστρέφει το στοιχείο x στην μορφή τύπου, όπου x είναι συμβολοσειρά ενός αριθμού και τύπος είδος αριθμού (integer, float).
+- `parse(type, x)`= returns the element x in its type format, where x is a string representation of a number and the type is either an integer or a float.
 """
 
 # ╔═╡ 41248972-638f-49e6-bb62-a05fd0801bca
@@ -1012,16 +1049,16 @@ parse(Float32, "Spam")
 
 # ╔═╡ 77391d48-fcf7-49e8-9e03-4dc22a3d566f
 md"""
-- `trunc(Int_value, x)` = επιστρέφει σε ακέραια μορφή τον x, όπου x είναι floating-point number και Int_value είναι το είδος ακεραίου.
+- `trunc(Int_value, x)` = returns x in integer format, where x is a floating-point number and Int_value is the integer type.
 """
 
 # ╔═╡ 66f75eb2-0cef-47db-8a91-684258971dae
-#Η trunc κόβει το δεκαδικό μέρος, δεν στρογγυλοποιεί.
+# trunc is cutting out the decimal, but doesn't round up or down.
 trunc(Int64, 2.955)
 
 # ╔═╡ fc8a84dd-d74c-4085-8332-695e48d02098
 md"""
-- `float(x)` = επιστρέφει τον ακέραιο αριθμό x σε μορφή αριθμού κινητής υποδιαστολής. (floating-points number)
+- `float(x)` = converts the integer number x to the format of a floating-point number.
 """
 
 # ╔═╡ f0272523-3581-4678-862a-8c7e559a8bf1
@@ -1029,18 +1066,18 @@ float(25)
 
 # ╔═╡ cd2fe6d7-99e5-46e1-9c8b-f12d5abfaac7
 md"""
-- `string(x)` = μετατροπή του στοιχείου x σε συμβολοσειρά.
+- `string(x)` = Converting the element x to a string.
 """
 
 # ╔═╡ 0f600eb6-087a-4827-b1e9-9fca23666183
 string(25.25)
 
 # ╔═╡ fdb5fc5d-a80a-4890-81cd-b8c080e2a17e
-string("Ο αριθμός ", 10, " διαιρείται με το 2")
+string("Number ", 10, " is divided with 2")
 
 # ╔═╡ 2de8f65d-3c0d-408b-859e-d2afba21ef47
 md"""
-- `bitstring(x)` = επιστρέφει τη δυαδική αποθήκευση του αριθμού  x σε λέξη 64 bits.
+- `bitstring(x)` = returns the binary representation of the number x as a 64-bit word.
 """
 
 # ╔═╡ 51ddc276-4479-4af8-9e0e-803daf3d866e
@@ -1055,146 +1092,146 @@ end
 
 # ╔═╡ 9fbaad24-91f9-4626-b2f3-e028812d0e90
 md"""
-##### Μαθηματικών
+##### Mathematics
 
-- `sqrt(x)` = επιστρέφει $\sqrt{x}$.
+- `sqrt(x)` = returns $\sqrt{x}$.
 
-- `log(x)` = επιστρέφει $ln(x)$.
+- `log(x)` = returns $ln(x)$.
 
-- `log10(x)` = επιστρέφει $log(x)$.
+- `log10(x)` = returns $log(x)$.
 
-- `exp(x)` = επιστρέφει το $e^x$
+- `exp(x)` = returns $e^x$
 
-- `sin(x)` = επιστρέφει το ημίτονο του x.
+- `sin(x)` = returns sin of x.
 
-- `cos(x)` = επιστρέφει το συνημίτονο του x.
+- `cos(x)` = returns cos of x.
 
-- `tan(x)` = επιστρέφει την εφαπτομένη του x.
+- `tan(x)` = returns tan of x.
 
-- `abs(x)` = επιστρέφει την απόλυτη τιμή του x.
+- `abs(x)` = returns the absolute value of x.
 
-- `factorial(x)` = επιστρέφει το παραγοντικό του ακεραίου x.
+- `factorial(x)` = returns the factorial of integer x.
 
-- `div(x, y)` = επιστρέφει το πηλίκο των αριθμών x, y.
+- `div(x, y)` = returns quotient of numbers x, y.
 
-- `rem(x, y)` = επιστρέφει το υπόλοιπο ων αριθμών x, y.
+- `rem(x, y)` = returns remainder of numbers x, y.
 
-- `divrem(x, y)` = επιστρέφει σε μορφή πλειάδας (πηλίκο, υπόλοιπο) των αριθμών x, y.
+- `divrem(x, y)` = returns a tuple (quotient, remainder) of x, y.
 
-- `rand()` = επιστρέφει έναν τυχαίο αριθμό από το διάστημα [0, 1).
+- `rand()` = returns a random number from the interval [0, 1).
 
-- `rand(n:m)` = επιστρέφει έναν τυχαίο ακέραιο αριθμό από το διάστημα [n, m]
+- `rand(n:m)` = returns a random ingteger from the interval [n,m]
 """
 
 # ╔═╡ 468cec03-9123-48f1-875e-dad7b64fb065
 md"""
-##### Συμβολοσειρών
+##### Strings
 
-- `uppercase(x)` = επιστρέφει με κεφαλαία γράμματα την συμβολοσειρά x.
+- `uppercase(x)` = returns the string x in uppercase.
 
-- `findfirst(x, string)` = επιστρέφει την πρώτη θέση\-εις που εμφανίζεται η συμβολοσειρά x.
+- `findfirst(x, string)` = returns the first position where the string x appears.
 
-- `findnext(x, string, number)` = όμοια με την findfirst μόνο που ξεκινάει τον έλεγχο από την θέση number.
+- `findnext(x, string, number)` = same as findfirst except that it starts checking from position number.
 
-- `collect(x)` = μετατροπή συμβολοσειράς x σε πίνακα, όπου κάθε στοιχείο αντιστοιχεί σε έναν χαρακτήρα της x.
+- `collect(x)` = convert string x to an array, where each element corresponds to a character of x.
 
-- `split(x)` = μετατροπή συμβολοσειράς x σε πίνακα, όπου κάθε στοιχείο αντιστοιχεί σε μία λέξη της x.
+- `split(x)` = convert string x into an array, where each element corresponds to one word of x.
 
-- `split(x, k)` = μετατροπή συμβολοσειράς x σε πίνακα, όπου κάθε στοιχείο προέκυψε απο την αποκοπή του k χαρακτήρα από την x.
+- `split(x, k)` = converts string x into an array, where each element resulted from splitting the k character from x.
 """
 
 # ╔═╡ d3f5b437-ab5f-4c1a-859d-be24b014db16
 md"""
-##### Πινάκων
+##### Matrices
 
-- `push!(a, x)` = εισαγωγή του στοιχείου x στο τέλος του πίνακα a.
+- `push!(a, x)` = inserts element x at end of array a.
 
-- `pushfirst!(a, x)` = εισαγωγή του στοιχείου x στην αρχή του πίνακα a.
+- `pushfirst!(a, x)` = pushes element x to the beginning of array a.
 
-- `append!(a, b)` = ένωση δύο πινάκων array a και b, όπου τα στοιχεία του b εισάγονται στο τέλος του πίνακα a.
+- `append!(a, b)` = union of two arrays a and b, where the elements of b are inserted at the end of array a.
 
-- `insert!(a, index, x)`  = εισαγωγή του στοιχείου x στην θέση index του πίνακα a.
+- `insert!(a, index, x)` = inserts element x at index position of array a.
 
-- `sort!(a)` = ταξινομούνται κατά αύξουσα σειρά τα στοιχεία του πίνακα a.
+- `sort!(a)` = the elements of array a are sorted in ascending order.
 
-- `sort(a)` = επιστρέφει αντίγραφο του πίνακα a με τα στοιχεία του ταξινομημένα κατά αύξουσα σειρά.
+- `sort(a)` = returns a copy of array a with its elements sorted in ascending order.
 
-- `sum(a)` = το άθροισμα των στοιχείων του a.
+- `sum(a)` = the sum of the elements of a.
 
-- `splice!(a, index)` = διαγράφει το στοιχείο που βρίσκεται στη θέση index του πίνακα a και το επιστρέφει.
+- `splice!(a, index)` = deletes the element at index position of array a and returns it.
 
-- `pop!(a)` = διαγράφει το τελευταίο στοιχείο του πίνακα a και το επιστρέφει.
+- `pop!(a)` = deletes the last element of array a and returns it.
 
-- `popfirst!(a)` = διαγράφει το πρώτο στοιχείο του πίνακα a και το επιστρέφει.
+- `popfirst!(a)` = deletes the first element of array a and returns it.
 
-- `deleteat!(a, index)` = διαγράφει το στοιχείο που βρίσκεται στη θέση index του πίνακα a. (δεν το επιστρέφει) 
+- `deleteat!(a, index)` = deletes the element at index position of array a. (does not return it)
 
-- `join(a, k)` = ένωση των στοιχείων του πίνακα a σε μια συμβολοσειρά όπου τα στοιχεία ενώνονται με τον χαρακτήρα k.
+- `join(a, k)` = join the elements of array a into a string where the elements are joined by the character k.
 
-- `rand(n, m)` = επιστρέφει έναν πίνακα n x m με στοιχεία που βρίσκονται στο διάστημα [0,1).
+- `rand(n, m)` = returns an n x m array with elements in the interval [0,1).
 
-- `rand(a:b, n, m)` = επιστρέφει έναν πίνακα n x m με στοιχεία που βρίσκονται στο διάστημα [a,b].
+- `rand(a:b, n, m)` = returns an n x m array with elements in the interval [a,b].
 
-- `rand(n, m ,z)` = επιστρέφει έναν πίνακα n x m x z με στοιχεία που βρίσκονται στο διάστημα [0,1).
+- `rand(n, m ,z)` = returns an n x m x z array with elements located in the interval [0,1).
 
-- `zeros(n, m)` = επιστρέφει έναν πίνακα n x m με μηδενικά στοιχεία.
+- `zeros(n, m)` = returns an n x m array with elements being zero.
 
-- `ones(n, m)` = επιστρέφει έναν πίνακα n x m με στοιχεία άσσους.
+- `ones(n, m)` = returns an n x m array of elements being aces.
 
-- `size(A,1)` = επιστρέφει το πλήθος των γραμμών ενός πίνακα.
+- `size(A,1)` = returns the number of rows of an array.
 
-- `size(A,2)` = επιστρέφει το πλήθος των στηλών ενός πίνακα.
+- `size(A,2)` = returns the number of columns in an array.
 
-- `(m, n) = size(A)` ή `m, n = size(A)` = επιστρέφει το πλήθος των γραμμών στη μεταβλητή m και των στηλών στη μεταβλητή n.
+- `(m, n) = size(A)` or `m, n = size(A)` = returns the number of rows in variable m and the number of columns in variable n.
 """
 
 # ╔═╡ 06a56df5-3a27-4277-9126-1477e71daed6
 md"""
-##### Λεξικών
+##### Dictionaries
 
-- `lenght(dict)` = επιστρέφει το πλήθος των στοιχείων (key-value) του λεξικού. 
+- `length(dict)` = returns the number of elements (key-value) of the dictionary.
 
-- `keys(dict)` = επιστρέφει σε λίστα τα κλειδιά του λεξικού.
+- `keys(dict)` = returns the keys of the dictionary as a list.
 
-- `values(dict)` = επιστρέφει σε λίστα τα values του λεξικού.
+- `values(dict)` = returns the values of the dictionary as a list.
 
-- `pop!(dict, key)` = διαγράφει το key από το λεξικό και επιστρέφει το value του.
+- `pop!(dict, key)` = deletes the key from the dictionary and returns its value.
 
 """
 
 # ╔═╡ b9601e2b-4700-43f5-9fb1-253a35145e29
 md"""
-##### Πλειάδων
+##### Tuples
 
-Όταν θέλουμε να εισάγουμε πλειάδα σε συνάρτηση που δέχεται περισσότερες από μια εισόδους, γράφουμε το όνομα της μεταβλητής και αμέσως μετα τρεις τελείες. `(t...)`
+When we want to input a tuple in a function that accepts more than one input, we write the name of the variable  followed by three periods. `(t...)`
 
-Παράδειγμα: Η divrem δέχεται δύο αριθμούς. Αν t = (x, y) πλειάδα, τότε τρέχουμε την divrem ως: `divrem(t...)`
+Example: divrem accepts as inputs two numbers. If t = (x, y) tuple, then we run divrem as: `divrem(t...)`
 
-- `zip(x1, x2, ...)` = δέχεται αλληλουχίες και επιστρέφει μια συλλογή από πλειάδες, όπου κάθε μία περιέχει ένα στοιχείο από κάθε αλληλουχία.  
+- `zip(x1, x2, ...)` = accepts sequences as inputs and returns a collection of tuples, each containing one element from each sequence. 
 """
 
 # ╔═╡ 3e63ef90-196a-461a-9ea6-9464914c5c51
 md"""
 ##### Structs
 
-- `fieldnames(όνομα_struct)` = επιστρέφει τα πεδία του struct.
+- `fieldnames(struct_name)` = returns the fields of the struct.
 
-- `isdefined(object, :πεδίο)` = επιστρέφει true/false σε περίπτωση που υπάρχει/δεν υπάρχει το πεδίο στο object του struct.
+- `isdefined(object, :field)` = returns true/false if the field exists/does not exist in the struct.
 
-- `object isa όνομα_struct` = επιστρέφει true/false σε περίπτωση που το object είναι/δεν είναι instance του struct.
+- `object isa struct_name` = returns true/false if the object is/is not an instance of the struct.
 """
 
 # ╔═╡ f536c99d-9d06-4784-b5be-81e58b3dfe06
 md"""
-#####  Επιπρόσθετες συναρτήσεις
+#####  Extra functions
 
-- `minimum(x)` = επιστρέφει το μικρότερο στοιχείο μιας αλληλουχίας x.
+- `minimum(x)` = returns the smallest element of a sequence x.
 
-- `maximum(x)` = επιστρέφει το μεγαλύτερο στοιχείο μιας αλληλουχίας x.
+- `maximum(x)` = returns the largest element of a sequence x.
 
-- `reverse(x)` = επιστρέφει σε ανεστραμμένη μορφή μια αλληλουχία x.
+- `reverse(x)` = returns a sequence x in reverse form.
 
-- `deepcopy(x)` = αντιγραφή του x.
+- `deepcopy(x)` = copy of x.
 """
 
 # ╔═╡ 682252ad-ea8f-4eb8-abf4-02edb133e5dc
@@ -1202,14 +1239,14 @@ md"""
 
 # ╔═╡ 99d1bfbb-96b4-4b07-ba08-1767b864e2b5
 md"""
-##### Συναρτήσεις με/χωρίς `!` ,  `.`
+##### Functions with/without `!` ,  `.`
 
-- Οι συναρτήσεις που ακολουθούνται από `!` μεταλλάσουν (mutating functions) το περιεχόμενο τους, ενώ όσες δεν ακολουθούνται από `!`, το περιεχόμενο τους παραμένει αμετάβλητο. (non-mutating functions)
+- Functions followed by `!` mutate (mutating functions) their content, while those not followed by `!`, have their content remain unchanged. (non-mutating functions)
 """
 
 # ╔═╡ 05f1df98-af35-4162-9c8f-e93d824cde1c
 let
-	#Παράδειγμα mutating, non-mutating functions.
+	#Example of mutating, non-mutating functions.
 	v = [3, 4, 1]
 	
 	#Non-mutating
@@ -1223,12 +1260,12 @@ end
 
 # ╔═╡ 49b90c77-013e-470c-86cd-8b0d021ff793
 md"""
-- Οι συναρτήσεις που ακολουθούνται από `.` "εξετάζουν" σε μέρη/κομμάτια το object, ενώ όσες δεν ακολουθούνται από `.` "εξετάζουν" το object ως ενιαίο.
+- The functions followed by `.` "examine" the object in parts/pieces, while those not followed by `.` "examine" the object as a unit.
 """
 
 # ╔═╡ e79ede1d-4cda-4442-88a9-b4ccf484dfda
 let
-	#Παράδειγμα
+	#Example
 	f1(A) = A^2
 	
 	B = [2 3; 5 6]
@@ -1242,18 +1279,18 @@ end
 
 # ╔═╡ bf012a19-8e70-48b5-b827-2b0a380ef51f
 html"""
-<br><h3>Υλοποίηση Συναρτήσεων</h3><br>
+<br><h3>Function Definition</h3><br>
 """
 
 # ╔═╡ c0b62bb1-0d67-4f4b-9067-0e219a86a393
 md"""
-Χρησιμοποιούμε την εντολή `function`
-- Παράδειγμα συνάρτησης χωρίς είσοδο.
+We use the `function` command
+- Example of function without input.
 """
 
 # ╔═╡ 9c5ee529-d5ec-4e65-8da7-0329f90f6261
 begin
-	#Συνάρτηση υπολογισμού αθροίσματος των περιττών αριθμών από το 1 εώς και το 1000.
+	#Function to calculate sum of odd numbers from 1 to 1000.
 	function odd_sum()
 	    sum(1:2:1000)
 	end
@@ -1264,9 +1301,9 @@ end
 # ╔═╡ 0593b612-71bb-4c91-86d6-9a82a6e637a7
 begin
 	#=
-	Συνάρτηση υπολογισμού αθροίσματος όλων των αριθμών από το 1 εώς το 1000.
-	Παράδειγμα εμφωλευμένης συνάρτησης.
-	sum(0:2:1000) = υπολογίζει το άθροισμα των άρτιων αριθμών από το 1 εώς και το 1000.
+	Function to calculate sum of all numbers from 1 to 1000.
+	Nested function example.
+	sum(0:2:1000) = calculates the sum of even numbers from 1 to 1000.
 	=#
 	
 	function all_sum()
@@ -1278,11 +1315,11 @@ end
 
 # ╔═╡ bbbbd2ce-714e-4ad4-872e-f5c45af0d0af
 md"""
-- Παράδειγμα συνάρτησης με είσοδο.
+- Example of function with return value.
 """
 
 # ╔═╡ 9d33f353-0e34-47bf-8207-45613770aa10
-#Συνάρτηση υπολογισμού αθροίσματος όλων των αριθμών από το a εώς και το b.
+#Function for summing all the numbers from a to b.
 
 function all_sum1(a,b)
     sum(a:b)    
@@ -1299,7 +1336,7 @@ all_sum1(-500,1000)
 
 # ╔═╡ bb4d2835-0a0d-4959-a3cf-f25b69535c26
 md"""
-- Μπορούμε επίσης να υλοποιήσουμε συναρτήσεις μιας γραμμής.
+- We can also define single line functions.
 """
 
 # ╔═╡ 4023224b-7ae6-4901-81b7-487add673c26
@@ -1316,11 +1353,11 @@ all_sum2(numbers)
 
 # ╔═╡ d1070b01-953f-4c3e-80e3-08214173f10b
 md"""
-Για να __επιστρέψουμε__ values από τις συναρτήσεις χρησιμοποιούμε το `return`.
+To __return__ values from functions we use `return`.
 """
 
 # ╔═╡ a9e86288-9633-418d-85b2-f6afe4ee6e5b
-#Παράδειγμα συνάρτησης που επιστρέφει το άθροισμα ή το γινόμενο δύο αριθμών.
+#Example of a function that returns the sum or product of two numbers.
 function calculate_items1((item1, item2))
 	if item1 > item2
 		return item1+item2
@@ -1337,273 +1374,306 @@ end
 
 # ╔═╡ e233874a-83c0-44e4-8815-55bf2fcf0e3b
 md"""
-- Για να εισάγουμε στις συναρτήσεις __global__ μεταβλητές, αρκεί να περιέχεται η εντολή `global όνομα_μεταβλητής` μέσα στον κώδικα της συνάρτησης. (Αντίστοιχα υπάρχει και η εντολή `local`) 
-"""
-
-# ╔═╡ 00000000-0000-0000-0000-000000000001
-PLUTO_PROJECT_TOML_CONTENTS = """
-[deps]
-PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
-
-[compat]
-PlutoUI = "~0.7.49"
-"""
-
-# ╔═╡ 00000000-0000-0000-0000-000000000002
-PLUTO_MANIFEST_TOML_CONTENTS = """
-# This file is machine-generated - editing it directly is not advised
-
-[[AbstractPlutoDingetjes]]
-deps = ["Pkg"]
-git-tree-sha1 = "8eaf9f1b4921132a4cff3f36a1d9ba923b14a481"
-uuid = "6e696c72-6542-2067-7265-42206c756150"
-version = "1.1.4"
-
-[[ArgTools]]
-uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
-version = "1.1.1"
-
-[[Artifacts]]
-uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
-
-[[Base64]]
-uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
-
-[[ColorTypes]]
-deps = ["FixedPointNumbers", "Random"]
-git-tree-sha1 = "eb7f0f8307f71fac7c606984ea5fb2817275d6e4"
-uuid = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
-version = "0.11.4"
-
-[[CompilerSupportLibraries_jll]]
-deps = ["Artifacts", "Libdl"]
-uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.1+0"
-
-[[Dates]]
-deps = ["Printf"]
-uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
-
-[[Downloads]]
-deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
-uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
-version = "1.6.0"
-
-[[FileWatching]]
-uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
-
-[[FixedPointNumbers]]
-deps = ["Statistics"]
-git-tree-sha1 = "335bfdceacc84c5cdf16aadc768aa5ddfc5383cc"
-uuid = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
-version = "0.8.4"
-
-[[Hyperscript]]
-deps = ["Test"]
-git-tree-sha1 = "8d511d5b81240fc8e6802386302675bdf47737b9"
-uuid = "47d2ed2b-36de-50cf-bf87-49c2cf4b8b91"
-version = "0.0.4"
-
-[[HypertextLiteral]]
-deps = ["Tricks"]
-git-tree-sha1 = "c47c5fa4c5308f27ccaac35504858d8914e102f9"
-uuid = "ac1192a8-f4b3-4bfe-ba22-af5b92cd3ab2"
-version = "0.9.4"
-
-[[IOCapture]]
-deps = ["Logging", "Random"]
-git-tree-sha1 = "f7be53659ab06ddc986428d3a9dcc95f6fa6705a"
-uuid = "b5f81e59-6552-4d32-b1f0-c071b021bf89"
-version = "0.2.2"
-
-[[InteractiveUtils]]
-deps = ["Markdown"]
-uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
-
-[[JSON]]
-deps = ["Dates", "Mmap", "Parsers", "Unicode"]
-git-tree-sha1 = "3c837543ddb02250ef42f4738347454f95079d4e"
-uuid = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
-version = "0.21.3"
-
-[[LibCURL]]
-deps = ["LibCURL_jll", "MozillaCACerts_jll"]
-uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
-version = "0.6.3"
-
-[[LibCURL_jll]]
-deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll", "Zlib_jll", "nghttp2_jll"]
-uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
-version = "7.84.0+0"
-
-[[LibGit2]]
-deps = ["Base64", "NetworkOptions", "Printf", "SHA"]
-uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
-
-[[LibSSH2_jll]]
-deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
-uuid = "29816b5a-b9ab-546f-933c-edad1886dfa8"
-version = "1.10.2+0"
-
-[[Libdl]]
-uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
-
-[[LinearAlgebra]]
-deps = ["Libdl", "libblastrampoline_jll"]
-uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-
-[[Logging]]
-uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
-
-[[MIMEs]]
-git-tree-sha1 = "65f28ad4b594aebe22157d6fac869786a255b7eb"
-uuid = "6c6e2e6c-3030-632d-7369-2d6c69616d65"
-version = "0.1.4"
-
-[[Markdown]]
-deps = ["Base64"]
-uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
-
-[[MbedTLS_jll]]
-deps = ["Artifacts", "Libdl"]
-uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
-version = "2.28.0+0"
-
-[[Mmap]]
-uuid = "a63ad114-7e13-5084-954f-fe012c677804"
-
-[[MozillaCACerts_jll]]
-uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2022.2.1"
-
-[[NetworkOptions]]
-uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
-version = "1.2.0"
-
-[[OpenBLAS_jll]]
-deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
-uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.20+0"
-
-[[Parsers]]
-deps = ["Dates", "SnoopPrecompile"]
-git-tree-sha1 = "8175fc2b118a3755113c8e68084dc1a9e63c61ee"
-uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
-version = "2.5.3"
-
-[[Pkg]]
-deps = ["Artifacts", "Dates", "Downloads", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
-uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.8.0"
-
-[[PlutoUI]]
-deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
-git-tree-sha1 = "eadad7b14cf046de6eb41f13c9275e5aa2711ab6"
-uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
-version = "0.7.49"
-
-[[Preferences]]
-deps = ["TOML"]
-git-tree-sha1 = "47e5f437cc0e7ef2ce8406ce1e7e24d44915f88d"
-uuid = "21216c6a-2e73-6563-6e65-726566657250"
-version = "1.3.0"
-
-[[Printf]]
-deps = ["Unicode"]
-uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
-
-[[REPL]]
-deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
-uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
-
-[[Random]]
-deps = ["SHA", "Serialization"]
-uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
-
-[[Reexport]]
-git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
-uuid = "189a3867-3050-52da-a836-e630ba90ab69"
-version = "1.2.2"
-
-[[SHA]]
-uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
-version = "0.7.0"
-
-[[Serialization]]
-uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
-
-[[SnoopPrecompile]]
-deps = ["Preferences"]
-git-tree-sha1 = "e760a70afdcd461cf01a575947738d359234665c"
-uuid = "66db9d55-30c0-4569-8b51-7e840670fc0c"
-version = "1.0.3"
-
-[[Sockets]]
-uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
-
-[[SparseArrays]]
-deps = ["LinearAlgebra", "Random"]
-uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
-
-[[Statistics]]
-deps = ["LinearAlgebra", "SparseArrays"]
-uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-
-[[TOML]]
-deps = ["Dates"]
-uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
-version = "1.0.0"
-
-[[Tar]]
-deps = ["ArgTools", "SHA"]
-uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
-version = "1.10.1"
-
-[[Test]]
-deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
-uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[[Tricks]]
-git-tree-sha1 = "6bac775f2d42a611cdfcd1fb217ee719630c4175"
-uuid = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
-version = "0.1.6"
-
-[[URIs]]
-git-tree-sha1 = "ac00576f90d8a259f2c9d823e91d1de3fd44d348"
-uuid = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
-version = "1.4.1"
-
-[[UUIDs]]
-deps = ["Random", "SHA"]
-uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
-
-[[Unicode]]
-uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
-
-[[Zlib_jll]]
-deps = ["Libdl"]
-uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
-version = "1.2.12+3"
-
-[[libblastrampoline_jll]]
-deps = ["Artifacts", "Libdl", "OpenBLAS_jll"]
-uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.1.1+0"
-
-[[nghttp2_jll]]
-deps = ["Artifacts", "Libdl"]
-uuid = "8e850ede-7688-5339-a07c-302acd2aaf8d"
-version = "1.48.0+0"
-
-[[p7zip_jll]]
-deps = ["Artifacts", "Libdl"]
-uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.4.0+0"
+- To introduce variables into __global__ functions, it is sufficient to include the command `global variable_name` inside. (Same goes for the local macro)
 """
 
 # ╔═╡ 7b8f8518-ff68-4c8b-88d2-c411b12cbbdb
+html"""
+<br><h3>Dictionaries</h3><br>
+"""
 
+# ╔═╡ 94a48bb0-2ee4-4674-9d1c-868c35d43ff3
+md"""
+__Creation of dictionary__
+- `x = Dict()` = empty dictionary
+- `x = Dict(key => value, ...)` = dictionary with elements
+"""
+
+# ╔═╡ 40c3cd91-28b2-4832-a389-82b4335cfc16
+let
+	#Creation of non-empty dictioanry
+	x = Dict(1 => "one", 2 => "two", 4 => "four")
+
+#=
+Int64: keys are integers of 64-bit
+String: values are strings
+Αny: More than one type
+=#
+end
+
+# ╔═╡ 781d49b8-30a4-4ff0-9b4a-49a26857a6c7
+
+
+# ╔═╡ c4093399-337c-4258-9006-e869ca1294fb
+md"""
+__Adding elements__
+- `x[key] = value`
+- `x = Dict(key => value)`
+"""
+
+# ╔═╡ 2fc859cb-7505-4d36-9944-556d9d73d4e1
+let
+	#Creation of empty dictionary (default is any) and later adding one element.
+	x = Dict()
+	x[1] = "one"
+	x
+end
+
+# ╔═╡ 971dd91f-da58-42d1-8699-2596a717846b
+
+
+# ╔═╡ 612c82c5-2d15-49e7-9129-c854d9d5a5d8
+md"""
+__Element reference__
+
+- `x[key]`
+"""
+
+# ╔═╡ 7c32e69f-1821-4f97-aa9c-1c39cbc70fb6
+let
+x = Dict(1 => "one", 2 => "two", 4 => "four")
+x[2]
+end
+
+# ╔═╡ 4d42cfb1-9735-43f6-9404-57ed40001693
+md"""
+- We can use the boolean operator ∈, which returns true if a key and/or value exists in the dictionary.
+"""
+
+# ╔═╡ a6e8bb3f-b00d-4fc7-8c40-adf0b8bd5195
+let
+x = Dict(1 => "one", 2 => "two", 4 => "four")
+
+#Key
+k = keys(x)
+println("1) ", 2 ∈ k)
+
+#Value
+v = values(x)
+println("2) ", "two" ∈ v)
+
+#Elemnt
+println("3) ", (2=>"two") ∈ x)
+end
+
+# ╔═╡ d93e8b41-f349-4467-8338-086efabbfd43
+let
+#=
+Example of printing values of a dictionary.
+(k,v) = tuple, where k is a key and v is a value.
+=#
+
+x = Dict(1 => "one", 2 => "two", 4 => "four")
+
+for (k,v) in x
+    println(x[k])
+end
+end
+
+# ╔═╡ e79a11bf-7a4a-4ab6-9624-f68d5715d656
+html"""
+<br><h3>Tuples</h3><br>
+"""
+
+# ╔═╡ 56cadd5f-ceab-4ed2-93e1-14afba815a21
+md"""
+__Tuple creation__
+
+With parenthesis: `t = (a, b, c, ...)`
+
+Without parenthesis: `t = a, b, c, ...`
+
+Through function tuple() :
+
+- `t = tuple()` = empty tuple
+
+- `t = tuple(a, b ,c, ...)`
+
+where a, b, c,... are any element, ex. numbers, characters, strings, arrays,...
+
+- The one element tuples should have the following form: ` t = (a, )`"""
+
+# ╔═╡ 8eedc45c-de72-41a2-8697-f317ef92f5be
+let
+#Examples
+t1 = 2, "asdf", 4_324.312 ,[2 3; 2 2]
+t2 = (2, "asdf", 4_324.312 ,[2 3; 2 2])
+t3 = tuple(2, "asdf", 4_324.312 ,[2 3; 2 2])
+
+println("t1 = ", t1)
+println("t2 = ", t2)
+println("t3 = ", t3)
+
+#Tuples with one element
+t4 = ('a',)
+println("t4 = ", t4,", όπου t4 είναι ", typeof(t4))
+
+#Not tuple
+t5 = ('a')
+println("t5 = ", t5,", όπου t5 είναι ", typeof(t5))
+end
+
+# ╔═╡ a0bf98d8-f5cd-439f-a13c-6f9f4e8d06fb
+md"""
+__Xαρακτηριστικά / Λειτουργίες__
+- They are immutable, meaning we cannot modify them.
+
+- We can select specific parts of tuples, just like in arrays:
+
+    - tuple_name[index]= reference to an element of the tuple located at index position of the tuple, where index is an integer greater than 1.
+
+     - tuple_name[index]= reference to an element of the tuple located at index position of the tuple, where index is an integer greater than 1.
+
+- They recognize comparison operators.
+"""
+
+# ╔═╡ ac3478b8-a9cf-4b79-8d84-aa26266098d9
+html"""
+<br><h3>Structs</h3><br>
+"""
+
+# ╔═╡ 556db363-25cf-45a8-903e-1206e766d9ad
+md"""__Struct definition__
+
+We use the command `struct`."""
+
+# ╔═╡ be42534e-cdb8-4542-8d31-3a299a4af138
+let
+#= 
+struct name
+    body -> domains_of_struct
+end
+=#
+
+#Struct of 3-d.
+struct Point
+    x
+    y
+    z
+end
+end  
+
+# ╔═╡ fa02910c-6805-4265-885d-5d26b55b3c91
+Point(3,4,5)
+
+# ╔═╡ a3c82dee-fa8d-44ca-926d-5b43afca9534
+md"""
+__Reference to values of struct__
+- `struct_name.value`"""
+
+# ╔═╡ cdc5c82b-e34c-4fe0-a1d2-ac04bf4886c0
+let
+#Struct Point.
+
+println("x = ", Point(1,2,3).x)
+
+y = Point(1,2,3).y
+println("y = ",y)
+
+point = Point(1,2,3)
+z = point.z
+println("z = ",z)
+end     
+
+# ╔═╡ 56c8f5e3-5226-4189-aa2a-9bfd79efc4a9
+md"""__Attention:__ Structs (`struct-end`) are immutable."""
+
+# ╔═╡ 80aebcb3-e043-4b03-8ef8-12ab671b45c6
+let
+#Change of value y
+point = Point(1,2,3)
+point.y = 4
+end     
+
+# ╔═╡ 6dc90949-83cf-4ac2-b3f0-bf18db9adf01
+md"""__Mutable structs__
+
+We do can create mutable structs with the command `mutable struct.`"""
+
+# ╔═╡ 8930f4f0-1587-4f15-abbc-805ebe1fc579
+let
+#=
+mutable struct name
+    body -> domain_of_mutable_struct
+end
+=#
+
+#Mutable 3-d point
+mutable struct MutablePoint
+    x
+    y
+    z
+end
+end
+
+# ╔═╡ 0a493f46-823e-4096-a537-16de99947cd2
+let
+mp = MutablePoint(0, 0, 0)
+mp.x = 1
+mp.y = 2
+mp.z = 3
+println(mp)
+end
+
+# ╔═╡ 257cdf5d-c08f-4ae9-94fd-c2bb94ebd9da
+html"""
+<br><h3>Files</h3><br>
+"""
+
+# ╔═╡ 9bfdc523-efc6-43d1-9fa4-1f94cab8e2a7
+md"""
+- `open("file_name")` = open file
+
+- `open("file_name", "w")` = open file in write mode
+
+- `write(file, string)` = returns the number of characters in the string that we inserted/wrote to the file
+
+- `readline("file_name")` = read a line from the file
+
+- `close("file_name")` = close file
+
+- `pwd()` = returns the name of the current working directory
+
+- `abspath("file_name")` = returns the absolute path of the file
+
+- `ispath("file_name")` = returns true/false if the file exists/doesn't exist
+
+- `isdir("something")` = returns true/false if "something" is/isn't a directory
+
+- `isfile("something")` = returns true/false if "something" is/isn't a file
+
+- `readdir(directory)` = returns a string of files (and other directories) that exist in the given directory."""
+
+# ╔═╡ 1581edf9-0207-4f2f-a6e7-0a917d492dac
+html"""
+<br><h3>Packages</h3><br>
+"""
+
+# ╔═╡ 0f2cea3b-c5f9-4892-a6ab-561cbd105bfe
+md"""Julia has over 4,000 packages.
+
+- Adding packages: `Pkg.add("package")`
+
+- Using a package: `using package_name`
+
+- Removing a package: `Pkg.rm("package")`
+
+- Updating a package: `Pkg.update("package")`"""
+
+# ╔═╡ 7a67cb89-f187-4004-aa0e-0f005387e9ee
+let
+#import Pkg; Pkg.add("PlotlyJS")
+
+plotlyjs()
+plot(x -> x^2, 0, 10, xlabel ="x", ylabel = "y", label = "line")
+scatter!(x -> x^2, 0, 10, xlabel ="x", ylabel = "y", label = "points")
+end
+
+# ╔═╡ bc076fcb-405f-4ca3-8e72-124cf2f248f3
+html"""<br><big><b>Created by Anastasia-Efterpi Psitou</big></b><br>
+<b>B.Sc Mathematics NKUA</b>
+
+<br><br> References: <a href="https://docs.julialang.org/en/v1/">Julia Documentation</a>"""
 
 # ╔═╡ Cell order:
 # ╟─7feecaa0-9533-11ed-1e31-a735811d50da
@@ -1639,24 +1709,24 @@ version = "17.4.0+0"
 # ╠═d0bb6fd1-1d9c-4d4c-9eae-741f81a899e1
 # ╠═d18e843d-fdbc-4e8f-92a9-c899cba59c0c
 # ╠═78e5c6b4-165d-49d2-a424-845e25f100ed
-# ╠═20d20af3-1efb-44e8-ab14-a79cfc6c30ae
+# ╟─20d20af3-1efb-44e8-ab14-a79cfc6c30ae
 # ╠═1c9216d5-c426-4eed-9301-2b5c43bf0696
 # ╟─2f458543-24d5-4055-bd7e-35dbfefd2103
 # ╠═78475ce5-6c25-4e80-a5c7-ed5b05feffcf
 # ╠═fd505778-86d7-4f5e-93be-bc39f66bd6a9
 # ╟─66bd6be0-1de9-44b5-856f-d99964eb6f05
 # ╟─54c3b0cb-2924-47f3-9cbd-915abc154c45
-# ╠═a9d82725-c886-430d-9000-cb978c293ab0
+# ╟─a9d82725-c886-430d-9000-cb978c293ab0
 # ╠═448ed06a-2b35-4e8b-b76a-32289bea34b6
 # ╠═56c3d05e-7a2f-47a3-88a4-125a5ace539e
 # ╟─3ac8a3c2-bcd2-41dc-8327-b33dfb1a12f4
-# ╠═2c3770e9-8c53-4b86-bfb9-cd847707a94b
+# ╟─2c3770e9-8c53-4b86-bfb9-cd847707a94b
 # ╠═765e7219-8a06-4ef4-bb2a-7523f92ae476
 # ╟─9e1c30be-d4a9-4fc5-8d10-0f4c4a1f5371
 # ╟─7b7f4bfc-25d5-4235-8daa-3a3e4b0aca94
 # ╠═f6d1acf3-2bda-4588-964c-c5d3c2950b18
 # ╟─498aea1b-6181-4bac-add3-d0c3b9e55fc4
-# ╠═30b7b87e-7a60-4160-9e1b-300e4540db12
+# ╟─30b7b87e-7a60-4160-9e1b-300e4540db12
 # ╠═6ab5931b-42cc-472a-b3f5-76d0b42a5bc5
 # ╠═b07bbff5-e8b5-4b06-90f0-60cb49950c7a
 # ╠═79aeb335-342d-4fdb-b73c-146a7f3f9933
@@ -1674,7 +1744,7 @@ version = "17.4.0+0"
 # ╟─d5a10be3-a99f-460f-baf5-5f677a3df01c
 # ╠═414ab974-06a0-4e0e-80c7-e5075020e241
 # ╠═794d6540-3307-42f3-aa74-658c1e453dcb
-# ╠═314744b2-f931-4bd4-b3b6-6a155f206044
+# ╟─314744b2-f931-4bd4-b3b6-6a155f206044
 # ╟─96280bfc-e894-4646-b39c-d4f5457c0e87
 # ╟─678982e4-1e64-4afd-9f38-265a1f89da5d
 # ╟─990c528d-0d03-41b3-b15b-ee0d07fa67c4
@@ -1698,7 +1768,7 @@ version = "17.4.0+0"
 # ╠═5b1c9a5e-bd5e-486c-b6fc-9a18f021a9e5
 # ╟─9576bfad-110c-41d8-9042-789afdc5332a
 # ╠═1688076f-0b00-412c-8c40-95763cdad9d6
-# ╠═a881c76d-1cc3-449e-8119-3ed6e8928b26
+# ╟─a881c76d-1cc3-449e-8119-3ed6e8928b26
 # ╠═c38ef537-eeee-4d15-a046-151f277bbe7e
 # ╟─9a0a6127-fc31-45de-8488-32884ae73d6a
 # ╟─060010d4-daf6-4c20-b53e-10500c19dba9
@@ -1712,7 +1782,7 @@ version = "17.4.0+0"
 # ╠═ce5342e6-211c-49c7-be4b-5febae813bf9
 # ╟─6f1a8918-2520-462a-9fdf-b524fed33a74
 # ╠═28a15a7d-e866-47bb-9490-2eddf9d28df0
-# ╠═8a62d390-94d0-4a47-b0fe-dd93ed2cc2c2
+# ╟─8a62d390-94d0-4a47-b0fe-dd93ed2cc2c2
 # ╟─db8d49da-b366-4c94-b45e-a6bbcb8e5d52
 # ╟─719dec61-6a0b-441e-9ea9-2e29c641577f
 # ╟─7e53f015-259a-4761-9890-391cfb71ff1e
@@ -1730,7 +1800,7 @@ version = "17.4.0+0"
 # ╠═78e049a7-babe-41af-80b5-c076ded694ec
 # ╠═529f1c27-7ae7-4a53-b7e1-d63558507847
 # ╟─3db66c88-4a88-4051-aa63-351efa9ebadc
-# ╟─727b50ba-221c-419c-b34e-9caf5f7ee5da
+# ╠═727b50ba-221c-419c-b34e-9caf5f7ee5da
 # ╠═e2069f84-eefa-4e77-ae3d-019450f32446
 # ╠═2d0190f4-505d-4e2e-bbcf-bb6eefb169c9
 # ╠═d382b6c0-c996-4b55-a4e4-13cec95f4c6c
@@ -1754,7 +1824,7 @@ version = "17.4.0+0"
 # ╠═66f75eb2-0cef-47db-8a91-684258971dae
 # ╟─fc8a84dd-d74c-4085-8332-695e48d02098
 # ╠═f0272523-3581-4678-862a-8c7e559a8bf1
-# ╟─cd2fe6d7-99e5-46e1-9c8b-f12d5abfaac7
+# ╠═cd2fe6d7-99e5-46e1-9c8b-f12d5abfaac7
 # ╠═0f600eb6-087a-4827-b1e9-9fca23666183
 # ╠═fdb5fc5d-a80a-4890-81cd-b8c080e2a17e
 # ╟─2de8f65d-3c0d-408b-859e-d2afba21ef47
@@ -1792,6 +1862,38 @@ version = "17.4.0+0"
 # ╠═f783edd8-581c-40ae-99c4-5bef52d7340e
 # ╠═bf9239d4-43ac-4af3-bbf1-01576c113491
 # ╟─e233874a-83c0-44e4-8815-55bf2fcf0e3b
-# ╟─00000000-0000-0000-0000-000000000001
-# ╟─00000000-0000-0000-0000-000000000002
-# ╠═7b8f8518-ff68-4c8b-88d2-c411b12cbbdb
+# ╟─7b8f8518-ff68-4c8b-88d2-c411b12cbbdb
+# ╟─94a48bb0-2ee4-4674-9d1c-868c35d43ff3
+# ╠═40c3cd91-28b2-4832-a389-82b4335cfc16
+# ╟─781d49b8-30a4-4ff0-9b4a-49a26857a6c7
+# ╟─c4093399-337c-4258-9006-e869ca1294fb
+# ╠═2fc859cb-7505-4d36-9944-556d9d73d4e1
+# ╟─971dd91f-da58-42d1-8699-2596a717846b
+# ╟─612c82c5-2d15-49e7-9129-c854d9d5a5d8
+# ╠═7c32e69f-1821-4f97-aa9c-1c39cbc70fb6
+# ╟─4d42cfb1-9735-43f6-9404-57ed40001693
+# ╠═a6e8bb3f-b00d-4fc7-8c40-adf0b8bd5195
+# ╠═d93e8b41-f349-4467-8338-086efabbfd43
+# ╟─e79a11bf-7a4a-4ab6-9624-f68d5715d656
+# ╟─56cadd5f-ceab-4ed2-93e1-14afba815a21
+# ╠═8eedc45c-de72-41a2-8697-f317ef92f5be
+# ╟─a0bf98d8-f5cd-439f-a13c-6f9f4e8d06fb
+# ╟─ac3478b8-a9cf-4b79-8d84-aa26266098d9
+# ╟─556db363-25cf-45a8-903e-1206e766d9ad
+# ╠═be42534e-cdb8-4542-8d31-3a299a4af138
+# ╠═fa02910c-6805-4265-885d-5d26b55b3c91
+# ╟─a3c82dee-fa8d-44ca-926d-5b43afca9534
+# ╠═cdc5c82b-e34c-4fe0-a1d2-ac04bf4886c0
+# ╟─56c8f5e3-5226-4189-aa2a-9bfd79efc4a9
+# ╠═80aebcb3-e043-4b03-8ef8-12ab671b45c6
+# ╟─6dc90949-83cf-4ac2-b3f0-bf18db9adf01
+# ╠═8930f4f0-1587-4f15-abbc-805ebe1fc579
+# ╠═0a493f46-823e-4096-a537-16de99947cd2
+# ╟─257cdf5d-c08f-4ae9-94fd-c2bb94ebd9da
+# ╟─9bfdc523-efc6-43d1-9fa4-1f94cab8e2a7
+# ╟─1581edf9-0207-4f2f-a6e7-0a917d492dac
+# ╟─0f2cea3b-c5f9-4892-a6ab-561cbd105bfe
+# ╠═0d380ab7-4534-49a0-8b1e-c17471bb6a2c
+# ╠═53146be1-f6d5-41aa-9940-35cfdbd7f045
+# ╠═7a67cb89-f187-4004-aa0e-0f005387e9ee
+# ╟─bc076fcb-405f-4ca3-8e72-124cf2f248f3
